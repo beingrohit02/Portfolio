@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import type { KeyboardEvent, PointerEvent } from 'react';
+import { motion } from 'motion/react';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -223,20 +224,24 @@ export function ProjectOrbitCarousel({ slides }: ProjectOrbitCarouselProps) {
 
           <div className="orbit-thumbnails" role="group" aria-label="Choose a project module">
             {slides.map((slide, itemIndex) => (
-              <button
+              <motion.button
                 className="orbit-thumbnail"
                 type="button"
                 key={slide.id}
                 aria-pressed={itemIndex === index}
                 aria-label={'Show ' + slide.title + ' ' + slide.subtitle}
                 onClick={() => goTo(itemIndex)}
+                initial={{ opacity: 0, x: -24 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.35 }}
+                transition={{ duration: 0.46, delay: itemIndex * 0.1, ease: [0.22, 1, 0.36, 1] }}
               >
                 <img src={slide.image} alt="" loading="lazy" />
                 <span className="orbit-thumbnail-copy">
                   <small>{String(itemIndex + 1).padStart(2, '0')}</small>
                   <strong>{slide.shortLabel}</strong>
                 </span>
-              </button>
+              </motion.button>
             ))}
           </div>
 

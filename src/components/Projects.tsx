@@ -7,7 +7,7 @@ export function Projects() {
   return (
     <section className="section projects-section" id="projects" aria-labelledby="projects-title">
       <div className="shell-container">
-        <Reveal>
+        <Reveal direction="left">
           <SectionHeading
             id="projects-title"
             eyebrow="02 / Selected work"
@@ -16,7 +16,9 @@ export function Projects() {
           />
         </Reveal>
       </div>
-      <ProjectOrbitCarousel slides={PROJECT_ORBIT_SLIDES} />
+      <Reveal direction="left" delay={0.08}>
+        <ProjectOrbitCarousel slides={PROJECT_ORBIT_SLIDES} />
+      </Reveal>
       <p className="projects-footnote shell-container">
         Three connected views of one featured project · CityPulse
       </p>

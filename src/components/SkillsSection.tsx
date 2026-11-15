@@ -9,7 +9,7 @@ export function SkillsSection() {
   return (
     <section className="section skills-section" id="skills" aria-labelledby="skills-title">
       <div className="shell-container">
-        <Reveal>
+        <Reveal direction="right">
           <SectionHeading
             id="skills-title"
             eyebrow="03 / Tools I reach for"
@@ -23,7 +23,12 @@ export function SkillsSection() {
             const Icon = categoryIcons[index] ?? Braces;
 
             return (
-              <Reveal className="skill-card" delay={index * 0.06} key={category.title}>
+              <Reveal
+                className="skill-card"
+                delay={index * 0.1}
+                direction="right"
+                key={category.title}
+              >
                 <div className="skill-card-top">
                   <span className="skill-icon"><Icon size={20} aria-hidden="true" /></span>
                   <span className="skill-index">0{index + 1}</span>
