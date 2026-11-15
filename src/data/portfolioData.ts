@@ -1,3 +1,5 @@
+import cityPulseImage from '../assets/images/citypulse_hero_1793996745262.jpg';
+
 export interface Project {
   id: string;
   title: string;
@@ -39,7 +41,7 @@ export const PORTFOLIO_DATA = {
       "I am a 1st-year B.Tech Computer Science and Engineering student specializing in Artificial Intelligence & Data Science at NIAT x Noida International University. From the very beginning of my engineering journey, my goal has been to move beyond theoretical models and engineer real-world intelligent systems that solve complex physical and digital problems.",
       "My primary development language is Python, which I use across deep learning frameworks like PyTorch and OpenCV, as well as production-ready backend architectures with FastAPI. Whether it is building real-time object detection pipelines with YOLO, creating context-aware RAG pipelines using local LLMs, or deploying responsive frontends, I focus on building reliable, high-performance software."
     ],
-    avatarImage: '',
+    avatarImage: '/images/rohit-profile.jpeg',
   },
   highlights: [
     {
@@ -75,7 +77,7 @@ export const PORTFOLIO_DATA = {
     subtitle: 'Unified Urban Incident Management & Emergency Dispatch Platform',
     description:
       'A unified urban management platform integrating Large Language Models (RAG), computer vision incident detection, and rule-based priority scoring to assist city authorities in real-time monitoring and emergency response.',
-    image: '',
+    image: cityPulseImage,
     category: 'computer_vision',
     categoryLabel: 'Urban AI & Computer Vision',
     featured: true,
@@ -173,7 +175,7 @@ export const PORTFOLIO_DATA = {
         {
           name: 'Tailwind CSS',
           level: 'Styling',
-          description: 'Modern neo-brutalist & cyber aesthetic layouts, dark mode',
+          description: 'Responsive layouts, reusable components, and themeable interfaces',
         },
         {
           name: 'PostgreSQL & Supabase',
