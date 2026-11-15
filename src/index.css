@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+@theme inline {
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--ink);
+  --color-border: var(--line);
+  --color-ring: var(--forest);
+  --color-muted: var(--paper-deep);
+  --color-muted-foreground: var(--muted);
+  --color-chart-1: #173b30;
+  --color-chart-2: #5d7d5a;
+  --color-chart-3: #9bbd6f;
+  --color-chart-4: #c48c5a;
+  --color-chart-5: #779a94;
+}
+
 :root {
   color-scheme: light;
   font-family: "DM Sans", "Segoe UI", sans-serif;
@@ -234,8 +250,335 @@ img {
 
 .hero-section {
   position: relative;
-  padding: clamp(76px, 9vw, 122px) 0 94px;
+  padding: 0;
   isolation: isolate;
+}
+
+.perspective-hero {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: calc(100svh - 78px);
+  min-height: 620px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  color: #f6f5ed;
+  background:
+    radial-gradient(ellipse at 50% 48%, rgba(61, 101, 76, 0.36), transparent 48%),
+    linear-gradient(135deg, #10251e, #0c1915 54%, #12261d);
+}
+
+.hero-tunnel-grid,
+.hero-tunnel-glow,
+.hero-tunnel-ring,
+.hero-tunnel-cards,
+.hero-sparkles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero-tunnel-grid {
+  z-index: 0;
+  background-image: radial-gradient(rgba(212, 239, 132, 0.22) 1px, transparent 1px);
+  background-size: 31px 31px;
+  mask-image: radial-gradient(ellipse 72% 72% at 50% 50%, #000 30%, transparent 100%);
+  opacity: 0.3;
+}
+
+.hero-tunnel-glow {
+  z-index: 0;
+  background: radial-gradient(circle at 50% 48%, rgba(212, 239, 132, 0.11), transparent 38%);
+}
+
+.hero-tunnel-ring {
+  z-index: 0;
+  inset: 50% auto auto 50%;
+  border: 1px solid rgba(212, 239, 132, 0.15);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hero-tunnel-ring-inner {
+  width: min(48vmin, 500px);
+  aspect-ratio: 1;
+}
+
+.hero-tunnel-ring-outer {
+  width: min(78vmin, 820px);
+  aspect-ratio: 1;
+  border-style: dashed;
+  border-color: rgba(246, 245, 237, 0.1);
+}
+
+.sparkle-field {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.sparkle-canvas,
+.sparkle-canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-sparkles {
+  opacity: 0.58;
+}
+
+.hero-profile-photo {
+  position: absolute;
+  z-index: 2;
+  top: clamp(22px, 5vh, 48px);
+  right: clamp(18px, 6vw, 82px);
+  width: clamp(76px, 10vw, 132px);
+  aspect-ratio: 4 / 5;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(246, 245, 237, 0.48);
+  border-radius: 46% 46% 18px 18px;
+  background: #20352b;
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.25);
+  transform: rotate(3deg);
+}
+
+.hero-profile-photo::after {
+  position: absolute;
+  inset: 58% 0 0;
+  content: "";
+  background: linear-gradient(transparent, rgba(5, 14, 10, 0.75));
+}
+
+.hero-profile-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+}
+
+.hero-profile-photo figcaption {
+  position: absolute;
+  z-index: 1;
+  right: 7px;
+  bottom: 7px;
+  left: 7px;
+  color: #f6f5ed;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-align: center;
+}
+
+.hero-tunnel-cards {
+  z-index: 1;
+  transform-style: preserve-3d;
+}
+
+.tunnel-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  aspect-ratio: 4 / 5;
+  padding: 6px;
+  border: 1px solid rgba(246, 245, 237, 0.19);
+  border-radius: 20px;
+  background: rgba(246, 245, 237, 0.1);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.35);
+  will-change: transform, opacity;
+  user-select: none;
+}
+
+.tunnel-card-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #20352b;
+}
+
+.tunnel-card-frame::after {
+  position: absolute;
+  inset: 30% 0 0;
+  content: "";
+  background: linear-gradient(transparent, rgba(5, 14, 10, 0.78));
+}
+
+.tunnel-card-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tunnel-card-caption {
+  position: absolute;
+  z-index: 1;
+  right: 14px;
+  bottom: 13px;
+  left: 14px;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.hero-tunnel-copy {
+  position: relative;
+  z-index: 3;
+  width: min(760px, calc(100% - 40px));
+  padding: 26px 0;
+  text-align: center;
+  will-change: transform, opacity;
+}
+
+.hero-tunnel-eyebrow {
+  margin: 0 0 22px;
+  color: #d4ef84;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.hero-tunnel-eyebrow span {
+  padding-inline: 6px;
+  color: rgba(246, 245, 237, 0.45);
+}
+
+.hero-tunnel-title {
+  margin: 0;
+  color: #f6f5ed;
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 500;
+  letter-spacing: -0.075em;
+  line-height: 0.91;
+  text-wrap: balance;
+}
+
+.hero-tunnel-title span {
+  display: block;
+  margin-top: 9px;
+  color: #d4ef84;
+  font-family: var(--display);
+  font-size: 0.82em;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.055em;
+}
+
+.hero-tunnel-intro {
+  max-width: 500px;
+  margin: 24px auto 0;
+  color: rgba(246, 245, 237, 0.72);
+  font-size: clamp(14px, 1.6vw, 17px);
+  line-height: 1.7;
+}
+
+.hero-tunnel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.hero-tunnel-primary,
+.hero-tunnel-secondary,
+.hero-tunnel-github {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 0 17px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+
+.hero-tunnel-primary:hover,
+.hero-tunnel-secondary:hover,
+.hero-tunnel-github:hover {
+  transform: translateY(-2px);
+}
+
+.hero-tunnel-primary {
+  color: #14251c;
+  background: #d4ef84;
+}
+
+.hero-tunnel-secondary {
+  border-color: rgba(246, 245, 237, 0.24);
+  color: #f6f5ed;
+  background: rgba(246, 245, 237, 0.06);
+}
+
+.hero-tunnel-secondary:hover,
+.hero-tunnel-github:hover {
+  border-color: rgba(212, 239, 132, 0.55);
+  background: rgba(212, 239, 132, 0.08);
+}
+
+.hero-tunnel-github {
+  min-height: 40px;
+  color: rgba(246, 245, 237, 0.78);
+}
+
+.hero-tunnel-institution {
+  margin: 19px 0 0;
+  color: rgba(246, 245, 237, 0.5);
+  font-size: 11px;
+  letter-spacing: 0.035em;
+}
+
+.hero-scroll-prompt {
+  position: absolute;
+  z-index: 4;
+  right: 20px;
+  bottom: 23px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: rgba(246, 245, 237, 0.64);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.projects-conveyor {
+  background: var(--paper);
+}
+
+.project-conveyor-link {
+  display: inline-flex;
+  min-height: 43px;
+  align-items: center;
+  gap: 9px;
+  padding: 0 16px;
+  border: 1px solid rgba(23, 59, 48, 0.2);
+  border-radius: 999px;
+  color: var(--forest);
+  font-size: 12px;
+  font-weight: 700;
+  transition: color 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+
+.project-conveyor-link:hover {
+  border-color: var(--forest);
+  color: #fffefa;
+  background: var(--forest);
 }
 
 .hero-glow {
@@ -1250,8 +1593,7 @@ img {
   }
 
   .hero-section {
-    padding-top: 66px;
-    padding-bottom: 72px;
+    padding: 0;
   }
 
   .hero-grid {
@@ -1428,6 +1770,53 @@ img {
   .footer-inner p {
     grid-column: 1 / -1;
     grid-row: 2;
+  }
+}
+
+@media (max-width: 760px) {
+  .perspective-hero {
+    height: calc(100svh - 68px);
+    min-height: 600px;
+  }
+
+  .hero-tunnel-copy {
+    width: min(620px, calc(100% - 34px));
+  }
+
+  .hero-tunnel-title {
+    font-size: clamp(2.8rem, 10vw, 5.2rem);
+  }
+
+  .hero-tunnel-intro {
+    max-width: 420px;
+    margin-top: 20px;
+  }
+
+  .hero-tunnel-ring-inner {
+    width: min(58vmin, 420px);
+  }
+
+  .hero-tunnel-ring-outer {
+    width: min(88vmin, 650px);
+  }
+}
+
+@media (max-width: 440px) {
+  .hero-tunnel-actions {
+    gap: 7px;
+    margin-top: 22px;
+  }
+
+  .hero-tunnel-primary,
+  .hero-tunnel-secondary {
+    min-height: 42px;
+    padding-inline: 12px;
+    font-size: 11px;
+  }
+
+  .hero-tunnel-institution {
+    max-width: 280px;
+    margin-inline: auto;
   }
 }
 

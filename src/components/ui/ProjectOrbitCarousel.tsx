@@ -39,7 +39,7 @@ export function ProjectOrbitCarousel({ slides }: ProjectOrbitCarouselProps) {
         trigger: track,
         start: 'top top',
         end: 'bottom bottom',
-        snap: reduceMotion ? false : {
+        snap: reduceMotion ? undefined : {
           snapTo: 1 / steps,
           duration: { min: 0.25, max: 0.6 },
           delay: 0.06,
