@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react';
-import type { KeyboardEvent, PointerEvent } from 'react';
+import type { KeyboardEvent, PointerEvent, WheelEvent } from 'react';
 import { motion } from 'motion/react';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import gsap from 'gsap';
@@ -23,6 +23,7 @@ export function ProjectOrbitCarousel({ slides }: ProjectOrbitCarouselProps) {
   const indexRef = useRef(0);
   const directionRef = useRef<1 | -1>(1);
   const pointerStart = useRef<{ x: number; y: number } | null>(null);
+  const lastMobileWheelStep = useRef(0);
 
   const activeSlide = slides[index];
 
@@ -79,13 +80,13 @@ export function ProjectOrbitCarousel({ slides }: ProjectOrbitCarouselProps) {
     const direction = directionRef.current;
     gsap.fromTo(
       visual,
-      { autoAlpha: 0, x: direction * 22, y: 12, scale: 0.96, rotation: direction * 2 },
+      { autoAlpha: 0, x: direction * -84, y: 0, scale: 0.97, rotation: direction * -1.4 },
       { autoAlpha: 1, x: 0, y: 0, scale: 1, rotation: 0, duration: 0.62, ease: 'power3.out' },
     );
     gsap.fromTo(
       copy,
-      { autoAlpha: 0, y: 16 },
-      { autoAlpha: 1, y: 0, duration: 0.48, delay: 0.08, ease: 'power2.out' },
+      { autoAlpha: 0, x: direction * -54, y: 0 },
+      { autoAlpha: 1, x: 0, y: 0, duration: 0.5, delay: 0.06, ease: 'power3.out' },
     );
     gsap.to(ring, {
       rotation: index * 118,
@@ -139,7 +140,32 @@ export function ProjectOrbitCarousel({ slides }: ProjectOrbitCarouselProps) {
     const dy = event.clientY - start.y;
     if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.4) {
       goTo(index + (dx < 0 ? 1 : -1));
+    } else if (
+      window.matchMedia('(max-width: 760px)').matches &&
+      Math.abs(dy) > 42 &&
+      Math.abs(dy) > Math.abs(dx) * 1.4
+    ) {
+      moveFromMobileScroll(dy < 0 ? 1 : -1);
     }
+  };
+
+  const moveFromMobileScroll = (step: 1 | -1) => {
+    const current = indexRef.current;
+    const next = Math.max(0, Math.min(slides.length - 1, current + step));
+    if (next === current) return;
+
+    directionRef.current = next > current ? 1 : -1;
+    indexRef.current = next;
+    setIndex(next);
+  };
+
+  const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
+    if (window.matchMedia('(min-width: 761px)').matches || Math.abs(event.deltaY) < 14) return;
+
+    const now = performance.now();
+    if (now - lastMobileWheelStep.current < 640) return;
+    lastMobileWheelStep.current = now;
+    moveFromMobileScroll(event.deltaY > 0 ? 1 : -1);
   };
 
   if (!activeSlide) return null;
@@ -157,6 +183,7 @@ export function ProjectOrbitCarousel({ slides }: ProjectOrbitCarouselProps) {
         aria-label="CityPulse project modules"
         tabIndex={0}
         onKeyDown={handleKeyDown}
+        onWheel={handleWheel}
       >
         <div className="orbit-stage-heading">
           <span>CityPulse / System modules</span>
