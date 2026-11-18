@@ -1,0 +1,163 @@
+.correspondence,
+.colophon {
+  color: var(--paper);
+  background-color: #112c24;
+}
+
+.correspondence-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(32px, 8vw, 116px);
+  padding-block: clamp(64px, 8vw, 118px);
+}
+
+.correspondence-label {
+  margin: 0 0 26px;
+  color: #c1d4c7;
+  font: 600 0.75rem/1.5 var(--body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.correspondence-copy h2 {
+  margin: 0;
+  font-size: clamp(3.3rem, 7.8vw, 7rem);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.075em;
+  text-wrap: balance;
+}
+
+.correspondence-copy em {
+  color: var(--lime);
+  font-family: var(--display);
+  font-weight: 400;
+  letter-spacing: -0.065em;
+}
+
+.correspondence-note {
+  max-width: 44ch;
+  margin: 24px 0;
+  color: #d0dbd1;
+  font-size: clamp(1rem, 1.4vw, 1.125rem);
+  line-height: 1.65;
+}
+
+.correspondence-address {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 14px;
+  font-size: clamp(1.05rem, 1.9vw, 1.45rem);
+  text-decoration: underline;
+  text-decoration-color: #698777;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+}
+
+.correspondence-address span {
+  display: grid;
+  width: 35px;
+  height: 35px;
+  place-items: center;
+  border-radius: 50%;
+  color: #112c24;
+  background: var(--lime);
+}
+
+.correspondence-address svg { width: 19px; height: 19px; }
+.correspondence-address:hover { color: var(--lime); text-decoration-color: currentColor; }
+.correspondence-address:focus-visible,
+.colophon a:focus-visible { outline-color: var(--lime); }
+
+.correspondence-origin {
+  display: grid;
+  justify-items: center;
+  gap: 28px;
+  margin: 0 clamp(0px, 5vw, 65px) 0 0;
+}
+
+.postage {
+  --edge: 7px;
+  width: clamp(140px, 16vw, 200px);
+  padding: 15px 15px 8px;
+  color: #193f32;
+  background: #e4e5cf;
+  mask: linear-gradient(#000 0 0) center / calc(100% - 2 * var(--edge)) calc(100% - 2 * var(--edge)) no-repeat,
+    radial-gradient(circle at var(--edge) var(--edge), transparent 3px, black 3.8px) calc(-1 * var(--edge)) calc(-1 * var(--edge)) / calc(2 * var(--edge)) calc(2 * var(--edge));
+  transform: rotate(6deg);
+}
+
+.postage-portrait {
+  display: block;
+  padding: 3px;
+  border: 1px solid #658274;
+  background: #bed3b3;
+}
+
+.postage-portrait img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1.1;
+  object-fit: cover;
+  object-position: center 30%;
+  filter: grayscale(1) contrast(1.12);
+  mix-blend-mode: multiply;
+}
+
+.postage-signature {
+  display: block;
+  margin-top: 4px;
+  text-align: center;
+  font: italic 1.5rem/1.3 var(--display);
+}
+
+.correspondence-origin figcaption {
+  color: #b9ccc0;
+  font-size: 0.8rem;
+}
+
+.colophon-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 30px;
+  padding-block: 14px;
+  border-top: 1px solid #456153;
+  font-size: 0.84rem;
+}
+
+.colophon small { margin-right: auto; color: #b9ccc0; font-size: inherit; }
+.colophon nav { display: flex; gap: 22px; }
+.colophon a { display: inline-flex; align-items: center; gap: 5px; min-height: 44px; }
+.colophon a:hover { color: var(--lime); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .correspondence-address svg,
+  .colophon-top svg { transition: transform 180ms ease-out; }
+  .correspondence-address:hover svg { transform: translate(2px, -2px); }
+  .colophon-top:hover svg { transform: translateY(-2px); }
+}
+
+@media (max-width: 600px) {
+  .correspondence-inner { grid-template-columns: minmax(0, 1fr) 86px; gap: 14px; align-items: start; }
+  .correspondence-copy { display: contents; }
+  .correspondence-label { grid-column: 1; margin: 0; }
+  .correspondence-copy h2 { grid-column: 1; align-self: center; }
+  .correspondence-origin { grid-column: 2; grid-row: 1 / 3; align-self: center; margin: 0; gap: 10px; }
+  .postage { --edge: 5px; width: 82px; padding: 8px 8px 4px; }
+  .postage-signature { font-size: 0.9rem; }
+  .correspondence-origin figcaption { font-size: 0.68rem; text-align: center; }
+  .correspondence-note { grid-column: 1 / -1; margin: 10px 0 0; }
+  .correspondence-address { grid-column: 1 / -1; justify-self: start; }
+  .colophon-inner { gap: 0 16px; }
+  .colophon nav { gap: 15px; }
+}
+
+@media (max-width: 440px) {
+  .colophon-inner { display: grid; grid-template-columns: 1fr auto; }
+  .colophon nav { grid-column: 1; grid-row: 1; }
+  .colophon-top { justify-self: end; }
+  .colophon small { grid-column: 1 / -1; grid-row: 2; margin: 6px 0; }
+}

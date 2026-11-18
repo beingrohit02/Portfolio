@@ -1,68 +1,94 @@
-import { ArrowUpRight } from 'lucide-react';
+import { useRef, useState, type KeyboardEvent } from 'react';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
-import { PROJECT_ORBIT_SLIDES } from '../data/projectOrbitSlides';
-import type { ConveyorProject, ProjectTier } from './ui/SushiConveyorMenu';
-import { ProjectConveyor } from './ui/SushiConveyorMenu';
-import { Reveal } from './ui/Reveal';
-import { SectionHeading } from './ui/SectionHeading';
-
-const PROJECT_MODULES: ConveyorProject[] = PROJECT_ORBIT_SLIDES.map((slide, index) => ({
-  id: slide.id,
-  name: slide.shortLabel,
-  description: slide.description,
-  price: slide.metricValue,
-  tier: (index + 1) as ProjectTier,
-  image: slide.image,
-  details: slide.tags,
-}));
+import { PROJECT_ORBIT_SLIDES as systemViews } from '../data/projectOrbitSlides';
+import './Projects.css';
 
 export function Projects() {
-  const projectUrl = PORTFOLIO_DATA.featuredProject.githubUrl;
+  const [selected, setSelected] = useState(0);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  function navigateViews(event: KeyboardEvent<HTMLButtonElement>, index: number) {
+    const last = systemViews.length - 1;
+    let next: number;
+    switch (event.key) {
+      case 'ArrowDown': next = index === last ? 0 : index + 1; break;
+      case 'ArrowUp': next = index === 0 ? last : index - 1; break;
+      case 'Home': next = 0; break;
+      case 'End': next = last; break;
+      default: return;
+    }
+    event.preventDefault();
+    setSelected(next);
+    tabRefs.current[next]?.focus();
+  }
 
   return (
-    <section className="section projects-section" id="projects" aria-labelledby="projects-title">
+    <section className="case-study" id="projects" aria-labelledby="projects-title">
       <div className="shell-container">
-        <Reveal direction="left">
-          <SectionHeading
-            id="projects-title"
-            eyebrow="02 / Selected work"
-            title="One system, many moving parts."
-            description="Scroll down or up to move through the CityPulse command center, computer vision, and emergency guidance modules."
-          />
-        </Reveal>
-      </div>
-
-      <Reveal direction="left" delay={0.08}>
-        <ProjectConveyor
-          id="citypulse-modules"
-          className="projects-conveyor"
-          items={PROJECT_MODULES}
-          eyebrow="CityPulse / System modules"
-          heading="A toolkit for the whole city."
-          caption="An AI-powered command center for urban incidents and emergency response."
-          speed={20}
-          autoplay
-          interval={4300}
-          legend={{ 1: 'Command', 2: 'Vision', 3: 'RAG' }}
-          labels={{
-            add: 'View on GitHub',
-            close: 'Close',
-            previous: 'Previous module',
-            next: 'Next module',
-            pause: 'Pause project motion',
-          }}
-          onAdd={() => window.open(projectUrl, '_blank', 'noopener,noreferrer')}
-          action={(
-            <a className="project-conveyor-link" href={projectUrl} target="_blank" rel="noreferrer">
-              Explore CityPulse <ArrowUpRight size={16} aria-hidden="true" />
+        <header className="case-heading">
+          <div>
+            <p className="case-kicker">Selected work</p>
+            <h2 id="projects-title">City<em>Pulse</em></h2>
+          </div>
+          <div className="case-summary">
+            <p>A city incident dashboard that brings video detection, emergency protocols, and dispatch into one place.</p>
+            <a className="case-source" href={PORTFOLIO_DATA.featuredProject.githubUrl} target="_blank" rel="noreferrer">
+              View source on GitHub <ArrowUpRight size={16} aria-hidden="true" />
             </a>
-          )}
-        />
-      </Reveal>
+          </div>
+        </header>
 
-      <p className="projects-footnote shell-container">
-        Three connected views of one featured project · CityPulse
-      </p>
+        <div className="case-inside">
+          <div className="case-index">
+            <h3 id="citypulse-views-title">Inside the system</h3>
+            <div role="tablist" aria-labelledby="citypulse-views-title" aria-orientation="vertical">
+              {systemViews.map((view, index) => (
+                <button
+                  key={view.id}
+                  type="button"
+                  role="tab"
+                  id={`citypulse-tab-${view.id}`}
+                  aria-selected={selected === index}
+                  aria-controls={`citypulse-panel-${view.id}`}
+                  tabIndex={selected === index ? 0 : -1}
+                  className="case-tab"
+                  ref={(node) => { tabRefs.current[index] = node; }}
+                  onClick={() => setSelected(index)}
+                  onKeyDown={(event) => navigateViews(event, index)}
+                >
+                  {view.shortLabel}
+                  <ArrowRight size={17} aria-hidden="true" />
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {systemViews.map((view, index) => (
+            <div
+              key={view.id}
+              role="tabpanel"
+              id={`citypulse-panel-${view.id}`}
+              aria-labelledby={`citypulse-tab-${view.id}`}
+              className="case-panel"
+              hidden={selected !== index}
+              tabIndex={0}
+            >
+              <figure>
+                <div className="case-image">
+                  <img src={view.image} alt={view.alt} loading="lazy" decoding="async" />
+                </div>
+                <figcaption>
+                  <p>{view.description}</p>
+                  <ul aria-label="Technologies used">
+                    {view.tags.map((tag) => <li key={tag}>{tag}</li>)}
+                  </ul>
+                </figcaption>
+              </figure>
+            </div>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

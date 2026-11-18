@@ -166,7 +166,7 @@ export function PerspectiveTunnelHero({
 
   useEffect(() => {
     const element = containerRef.current;
-    if (!element) return;
+    if (!element || reduceMotion) return;
 
     const handleWheel = (event: WheelEvent) => {
       const current = rawProgress.get();
@@ -178,7 +178,7 @@ export function PerspectiveTunnelHero({
 
     element.addEventListener('wheel', handleWheel, { passive: false });
     return () => element.removeEventListener('wheel', handleWheel);
-  }, [rawProgress]);
+  }, [rawProgress, reduceMotion]);
 
   const moveByTouch = (deltaY: number) => {
     const current = rawProgress.get();
@@ -203,7 +203,7 @@ export function PerspectiveTunnelHero({
         const start = touchStartY.current;
         const end = event.changedTouches[0]?.clientY;
         touchStartY.current = null;
-        if (start !== null && end !== undefined && Math.abs(start - end) > 24) {
+        if (!reduceMotion && start !== null && end !== undefined && Math.abs(start - end) > 24) {
           moveByTouch(start - end);
         }
       }}
@@ -212,7 +212,7 @@ export function PerspectiveTunnelHero({
       <div className="hero-tunnel-glow" aria-hidden="true" />
       <div className="hero-tunnel-ring hero-tunnel-ring-inner" aria-hidden="true" />
       <div className="hero-tunnel-ring hero-tunnel-ring-outer" aria-hidden="true" />
-      <SparklesCore className="hero-sparkles" particleDensity={34} speed={0.18} />
+      {!reduceMotion && <SparklesCore className="hero-sparkles" particleDensity={34} speed={0.18} />}
 
       {images[0] && (
         <figure className="hero-profile-photo">
@@ -223,7 +223,7 @@ export function PerspectiveTunnelHero({
 
       <motion.div
         className="hero-tunnel-copy"
-        style={{ scale: titleScale, opacity: titleOpacity }}
+        style={reduceMotion ? undefined : { scale: titleScale, opacity: titleOpacity }}
       >
         <p className="hero-tunnel-eyebrow">{name} <span>·</span> AI &amp; software</p>
         <h1 id="hero-title" className="hero-tunnel-title">
@@ -253,7 +253,7 @@ export function PerspectiveTunnelHero({
       </motion.div>
 
       <div className="hero-tunnel-cards" aria-hidden="true" style={{ transformStyle: 'preserve-3d' }}>
-        {cards.map((card) => (
+        {!reduceMotion && cards.map((card) => (
           <TunnelCard
             key={`${card.item.title}-${card.index}`}
             card={card}

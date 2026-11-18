@@ -1,18 +1,19 @@
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUp, ArrowUpRight } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
+import './Closing.css';
 
 export function Footer() {
+  const { profile } = PORTFOLIO_DATA;
+
   return (
-    <footer className="site-footer">
-      <div className="shell-container footer-inner">
-        <a className="footer-brand" href="#top">Rohit<span>.</span></a>
-        <p>Made with curiosity in Greater Noida, India.</p>
-        <a className="footer-top" href="#top">
-          Back to top <ArrowUpRight size={15} aria-hidden="true" />
-        </a>
-        <span className="footer-copyright">
-          © {new Date().getFullYear()} {PORTFOLIO_DATA.profile.name}
-        </span>
+    <footer className="colophon">
+      <div className="shell-container colophon-inner">
+        <small>© {new Date().getFullYear()} {profile.name}</small>
+        <nav aria-label="Social profiles">
+          <a href={profile.github} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={15} aria-hidden="true" /></a>
+          <a href={profile.linkedin} target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight size={15} aria-hidden="true" /></a>
+        </nav>
+        <a className="colophon-top" href="#top">Back to top <ArrowUp size={15} aria-hidden="true" /></a>
       </div>
     </footer>
   );
